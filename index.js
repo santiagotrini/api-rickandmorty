@@ -23,9 +23,10 @@ const CharacterSchema = new mongoose.Schema({
 const Character = mongoose.model('Character', CharacterSchema);
 // rutas de la API
 // todos los personajes
+// GET /api/characters
 app.get('/api/characters', (req, res) => {
   Character.find()
-    .then(characters => res.status(200).json(characters));
+    .then(characters => res.status(200).json(characters)); // responde 200 OK
 });
 // un personaje por ID
 app.get('/api/characters/:id', (req, res) => {
@@ -38,7 +39,7 @@ app.post('/api/characters', (req, res) => {
   const { id, name, img, species } = req.body;
   const newCharacter = new Character({ id, name, img, species });
   newCharacter.save()
-    .then(character => res.status(201).json(character));
+    .then(character => res.status(201).json(character)); // responde 201 Created
 });
 // borrar un personaje 
 app.delete('/api/characters/:id', (req, res) => {
@@ -47,11 +48,12 @@ app.delete('/api/characters/:id', (req, res) => {
 });
 // modificar un personaje
 app.put('/api/characters/:id', (req, res) => {
-  res.send('le falta...')
+  Character.findOneAndUpdate({ id: req.params.id }, req.body, { new: true })
+    .then(character => res.status(200).json(character));
 }); 
 // error 404
 app.use((req, res) => {
-  res.status(404).json({ msg: 'No encontrado' });
+  res.status(404).json({ msg: 'No encontrado' }); // responde 404 Not found
 });
 // listen
 app.listen(PORT, () => {
