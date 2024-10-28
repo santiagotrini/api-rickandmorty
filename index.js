@@ -3,8 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 // config vars
-const PORT = 3000;
-const DB   = 'mongodb://127.0.0.1/rickmorty';
+const PORT = process.env.PORT || 3000;
+const DB   = process.env.DB   || 'mongodb://127.0.0.1/rickmorty';
 // objeto app
 const app = express();
 // middleware de aplicacion
