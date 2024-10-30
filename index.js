@@ -1,7 +1,9 @@
 // imports
+// const express = require('express'); CommonJS
 import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import cors from 'cors';
 // config vars
 const PORT = process.env.PORT || 3000;
 const DB   = process.env.DB   || 'mongodb://127.0.0.1/rickmorty';
@@ -9,6 +11,7 @@ const DB   = process.env.DB   || 'mongodb://127.0.0.1/rickmorty';
 const app = express();
 // middleware de aplicacion
 app.use(morgan('dev'));  // middleware de logs
+app.use(cors());
 app.use(express.json()); // parsea los bodys en JSON
 // conectar a la DB
 mongoose.connect(DB)
@@ -28,11 +31,22 @@ app.get('/api/characters', (req, res) => {
   Character.find()
     .then(characters => res.status(200).json(characters)); // responde 200 OK
 });
+// GET /api/characters/search/:name
+app.get('/api/characters/search/:name', (req, res) => {
+  Character.find({ name: { "$regex": req.params.name, "$options": "i" } })
+    .then(characters => res.status(200).json(characters));
+    // .catch(err => res.status(403).json({ err: err.message }));
+});
+
 // un personaje por ID
 app.get('/api/characters/:id', (req, res) => {
   Character.findOne({ id: req.params.id })
     .then(character => res.status(200).json(character));
 });
+// app.get('/api/characters/id/:id', (req, res) => {
+//   Character.find({ id: req.params.id })
+//     .then(characters => res.status(200).json(characters));
+// });
 // crear un personaje 
 app.post('/api/characters', (req, res) => {
   console.log('El body vale: ', req.body);
