@@ -15,4 +15,7 @@ Ver la otra rama para una organizacion un poco mas pro del código.
 5. [Express](https://expressjs.com)
 6. [Mongoose](https://mongoosejs.com)
 
+## Frontend
+
+Hay un cliente para la API en [santiagotrini/front-rickandmorty](https://github.com/santiagotrini/front-rickandmorty).
 
